@@ -2,12 +2,8 @@ from dotenv import load_dotenv
 load_dotenv()
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
-from starlette.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
-
 from routers import todo
 from database import engine,Base
-
 
 app = FastAPI()
 app.add_middleware(
@@ -18,7 +14,6 @@ app.add_middleware(
 )
 Base.metadata.create_all(bind=engine)
 app.include_router(todo.router)
-app.mount("/static", StaticFiles(directory="static"), name="static")
 @app.get("/")
 def root():
     return {"message": "Task flow API is running be carefully done"}
