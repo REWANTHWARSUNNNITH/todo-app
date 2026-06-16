@@ -33,8 +33,8 @@ def get_todo(todo_id : int , db:Session = Depends(get_db)):
 def update_todo(todo_id:int,updated : TodoUpdate , db:Session = Depends(get_db)):
     todo = db.query(Todo).filter(Todo.id == todo_id).first()
     if not todo:
-        raise HTTPException(status_code=404)
-    for key, value in updated.dict().items():
+        raise HTTPException(status_code=404 , detail="To-Do not found")
+    for key, value in updated.model_dump(exclude_unset=True).items():
         setattr(todo, key, value)
     db.commit()
     db.refresh(todo)
