@@ -7,9 +7,9 @@ class TodoCreate(BaseModel):
     description:Optional[str]
     completed:bool=False
 class TodoUpdate(BaseModel):
-    title:Optional[str] = None
-    description:Optional[str] = None
-    completed:Optional[bool]=False
+    title:str |None= None
+    description:str|None = None
+    completed:bool|None=None
 class TodoResponse(BaseModel):
     id : int
     title : str
