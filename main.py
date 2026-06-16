@@ -21,4 +21,4 @@ app.include_router(todo.router)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 @app.get("/")
 def root():
-    return FileResponse("static./index.html")
+    return {"message": "Task flow API is running be carefully done"}
