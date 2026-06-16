@@ -6,7 +6,8 @@ from models import Todo
 from database import get_db
 from schemas import TodoResponse, TodoCreate,TodoUpdate
 from sqlalchemy.orm import Session
-
+import os
+from google import genai
 router = APIRouter(prefix="/todos",tags=["Todos"])
 
 # Create A todo
