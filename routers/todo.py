@@ -49,3 +49,29 @@ def delete_todo(todo_id : int, db:Session = Depends(get_db)):
     db.delete(todo)
     db.commit()
     return
+
+# Ai Integration BY gemini
+
+# 1. Initialize and configure the Gemini client GLOBALLY (once on startu    p)
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+print("KEY LOADED:", GEMINI_API_KEY)  # ← add this line
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+client = genai.Client(api_key=GEMINI_API_KEY)
+@router.get("/ai/suggest")
+async def suggest_description(title: str):
+    if not title.strip():
+        raise HTTPException(status_code=400, detail="Title cannot be empty")
+
+    try:
+        # 3. Call the modern client.models.generate_content syntax
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=f"suggest a short line description for a todo task called: {title}. Just give the description, nothing else."
+        )
+
+        suggestion = response.text.strip() if response.text else ""
+        return {"suggestion": suggestion}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"AI Generation failed: {str(e)}")
